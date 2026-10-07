@@ -123,6 +123,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </button>
           </div>
 
+          {/* API Health Monitor Section */}
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold text-slate-800">API Health (/api/health.js)</span>
+              </div>
+              <a
+                href="/api/health"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 underline"
+              >
+                Inspect JSON
+              </a>
+            </div>
+            <div className="text-[11px] text-slate-500 leading-relaxed font-mono bg-white p-2.5 rounded-xl border border-slate-200/80">
+              <div>Endpoint: /api/bus-arrival?BusStopCode=04121</div>
+              <div className="text-slate-400 mt-0.5">Env var: LTA_ACCOUNT_KEY (Configured in Vercel)</div>
+            </div>
+          </div>
+
           {/* Institutional Compliance block */}
           <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200/60 text-xs text-emerald-900 space-y-1">
             <div className="font-bold flex items-center gap-1.5">

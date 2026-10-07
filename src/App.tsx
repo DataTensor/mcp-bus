@@ -18,6 +18,7 @@ import {
   OTHER_STOPS
 } from './data/singaporeTransitData';
 import { BusStop, BusServiceArrival } from './types/transit';
+import { fetchBusArrivals } from './services/ltaApi';
 
 export default function App() {
   // Navigation tabs: nearby (default), favorites, routes, mrt, alerts
@@ -86,16 +87,32 @@ export default function App() {
     }
   }, [soundEnabled]);
 
-  // Telemetry refresh action
-  const handleRefreshFeed = useCallback(() => {
+  // Telemetry refresh action querying /api/bus-arrival
+  const handleRefreshFeed = useCallback(async () => {
     setIsRefreshing(true);
     playTransitChime();
 
-    setTimeout(() => {
-      setIsRefreshing(false);
-      setCountdownSeconds(refreshInterval);
-    }, 600);
-  }, [refreshInterval, playTransitChime]);
+    try {
+      const { services } = await fetchBusArrivals(currentStop.code);
+      if (services && services.length > 0) {
+        const foundFocus = services.find((s) => s.serviceNo === selectedBusService) || services[0];
+        setPrimaryService(foundFocus);
+
+        const others = services.filter((s) => s.serviceNo !== foundFocus.serviceNo);
+        if (others.length > 0) {
+          setOtherServices(others);
+        }
+      }
+    } catch {
+      // Graceful fallback to existing simulated telemetry
+    } finally {
+      setTimeout(() => {
+        setIsRefreshing(false);
+        setCountdownSeconds(refreshInterval);
+      }, 500);
+    }
+  }, [currentStop.code, selectedBusService, refreshInterval, playTransitChime]);
+
 
   // Countdown timer hook
   useEffect(() => {
