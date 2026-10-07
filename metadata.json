@@ -1,0 +1,6 @@
+{
+  "name": "SG BusWatch Live",
+  "description": "Real-time Singapore public transport bus arrival telemetry, route progression, and corridor radar powered by LTA DataMall.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
